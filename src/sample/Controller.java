@@ -12,15 +12,11 @@ import javafx.scene.shape.Circle;
 public class Controller {
 
     @FXML
-    TextArea textArea;
-    @FXML
     Button button1;
     @FXML
     TextField textField;
     @FXML
     TextArea textArea;
-
-    Model model = new Model();
 
     Model model = new Model();
 
