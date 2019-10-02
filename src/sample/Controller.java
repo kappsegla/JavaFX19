@@ -3,6 +3,7 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +18,8 @@ public class Controller {
     TextField textField;
     @FXML
     TextArea textArea;
+    @FXML
+    CheckBox checkBox1;
 
     Model model = new Model();
 
@@ -28,12 +31,20 @@ public class Controller {
         //Will run after all fields are set and view is ready
         //Next line replaces onAction="#button1Action" in fxml file
         //button1.addEventHandler(ActionEvent.ACTION,this::button1Action);
+        textArea.textProperty().bindBidirectional( model.textProperty());
+        model.textProperty().bindBidirectional(textField.textProperty());
+        checkBox1.selectedProperty().bindBidirectional(model.enabledProperty());
+        textField.disableProperty().bind(model.enabledProperty());
+        textArea.disableProperty().bind(model.enabledProperty());
+
+
+
 
     }
 
     public void button1Action(ActionEvent actionEvent) throws InterruptedException {
-        model.setText(textField.getText());
-        textArea.setText(model.getText());
+        model.setText("");
+       // textArea.setText(model.getText());
 
     }
 

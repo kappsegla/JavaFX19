@@ -28,7 +28,7 @@
          <Label text="Label"/>
          <Button fx:id="button1" mnemonicParsing="false" onAction="#button1Action" onKeyPressed="#keyPressed"
                  text="Button"/>
-         <CheckBox fx:id="checkbox1" mnemonicParsing="false" text="CheckBox"/>
+         <CheckBox fx:id="checkBox1" mnemonicParsing="false" text="CheckBox"/>
          <ToggleButton fx:id="togglebutton" mnemonicParsing="false" text="ToggleButton"/>
       </VBox>
    </left>
