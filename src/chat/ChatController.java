@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import javax.management.monitor.StringMonitor;
 import java.util.Optional;
 
 public class ChatController {
@@ -28,13 +29,22 @@ public class ChatController {
     }
 
     public void sendAction(ActionEvent actionEvent) {
-        //model.sendMessage();
-        showDialog();
+        if (model.isConnected())
+            model.sendMessage();
+        else {
+            Optional<Pair<String, Integer>> result = showDialog();
+            result.ifPresent(hostPort -> {
+                //Run in threadpool?
+                model.connect(hostPort.getKey(), hostPort.getValue());
+                //Check that we are connected now?
+                model.sendMessage();
+            });
+        }
     }
 
-    public void showDialog() {
+    public Optional<Pair<String, Integer>> showDialog() {
         // Create the custom dialog.
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        Dialog<Pair<String, Integer>> dialog = new Dialog<>();
         dialog.setTitle("Connect to");
         dialog.setHeaderText("Please enter server ip and port");
         dialog.initStyle(StageStyle.UTILITY);
@@ -76,16 +86,11 @@ public class ChatController {
 // Convert the result to a hostname-port-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == connectButtonType) {
-                return new Pair<>(hostName.getText(), port.getText());
+                return new Pair<>(hostName.getText(), Integer.parseInt(port.getText()));
             }
             return null;
         });
 
-        Optional<Pair<String, String>> result = dialog.showAndWait();
-
-        result.ifPresent(usernamePassword -> {
-            System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-        });
-
+        return dialog.showAndWait();
     }
 }

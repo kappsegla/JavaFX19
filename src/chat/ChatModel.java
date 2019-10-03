@@ -1,11 +1,11 @@
 package chat;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,38 +21,33 @@ public class ChatModel {
 
     public ChatModel() {
         threadPool = Executors.newFixedThreadPool(2);
-
-        //Connect to server
-        try {
-            socket = new Socket("82.196.127.10", 8000);
-            writer = new PrintWriter(socket.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //Start listening for messages
-            threadPool.submit(this::recieveMessages);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void recieveMessages() {
-        while (true) {
-            try {
-                String message = reader.readLine();
-                Platform.runLater(() ->
-                        chatMessages.add(message)
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    //<editor-fold desc="chatMessages">
     private ObservableList<String> chatMessages = FXCollections.observableArrayList();
 
     public ObservableList<String> getChatMessages() {
         return chatMessages;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="connectedProperty">
+    private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
+
+    public boolean isConnected() {
+        return connected.get();
+    }
+
+    public SimpleBooleanProperty connectedProperty() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected.set(connected);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="message">
     StringProperty message = new SimpleStringProperty("");
 
     public String getMessage() {
@@ -66,6 +61,21 @@ public class ChatModel {
     public void setMessage(String message) {
         this.message.set(message);
     }
+    //</editor-fold>
+
+    public void connect(String host, Integer port) {
+        //Connect to server
+        try {
+            socket = new Socket(host, port);
+            writer = new PrintWriter(socket.getOutputStream(), true);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            setConnected(true);
+            //Start listening for messages
+            threadPool.submit(this::receiveMessages);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void sendMessage() {
         if (message.get().length() > 0) {
@@ -73,6 +83,19 @@ public class ChatModel {
             final String mess = message.get();
             threadPool.submit(() -> writer.println(mess));
             message.setValue("");
+        }
+    }
+
+    private void receiveMessages() {
+        while (true) {
+            try {
+                String message = reader.readLine();
+                Platform.runLater(() ->
+                        chatMessages.add(message)
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
