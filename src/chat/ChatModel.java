@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import java.io.*;
 import java.net.Socket;
@@ -64,17 +65,42 @@ public class ChatModel {
     //</editor-fold>
 
     public void connect(String host, Integer port) {
+
+        Task<Socket> task = new Task<Socket>() {
+            @Override
+            protected Socket call() throws Exception {
+                return new Socket(host, port);
+            }
+        };
+        task.setOnRunning(event -> chatMessages.add("Connecting..."));
+        task.setOnFailed(event -> chatMessages.add("Error connecting"));
+        task.setOnSucceeded(event -> chatMessages.add("Connected"));
+
+        task.valueProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                socket = newValue;
+                writer = new PrintWriter(socket.getOutputStream(), true);
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                setConnected(true);
+                threadPool.submit(this::receiveMessages);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        threadPool.submit(task);
+
+
+
         //Connect to server
-        try {
-            socket = new Socket(host, port);
-            writer = new PrintWriter(socket.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            setConnected(true);
-            //Start listening for messages
-            threadPool.submit(this::receiveMessages);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            writer = new PrintWriter(socket.getOutputStream(), true);
+//            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            setConnected(true);
+//            //Start listening for messages
+//            threadPool.submit(this::receiveMessages);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void sendMessage() {

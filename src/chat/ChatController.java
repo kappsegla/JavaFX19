@@ -37,7 +37,7 @@ public class ChatController {
                 //Run in threadpool?
                 model.connect(hostPort.getKey(), hostPort.getValue());
                 //Check that we are connected now?
-                model.sendMessage();
+                //model.sendMessage();
             });
         }
     }
