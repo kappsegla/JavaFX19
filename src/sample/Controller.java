@@ -62,12 +62,11 @@ public class Controller {
         // textArea.setText(model.getText());
         //model.getItems().add(textField.getText());
 
-
         Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
         imageView.setImage(image);
 
 //         new Thread(() -> {
-//          Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
+//          Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", false);
 //            Platform.runLater(() ->
 //                imageView.setImage(image)
 //            );

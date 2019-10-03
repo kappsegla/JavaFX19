@@ -21,6 +21,6 @@ fx:controller="chat.ChatController">
     <HBox alignment="BOTTOM_LEFT" prefHeight="0.0" prefWidth="0.0" GridPane.rowIndex="1"
           GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
         <TextField fx:id="textField"  onAction="#sendAction" alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="sendButton" onAction="#sendAction" text="Button" disable="${textField.text.empty}"/>
+        <Button fx:id="sendButton" onAction="#sendAction" text="Send" disable="${textField.text.empty}"/>
     </HBox>
 </GridPane>

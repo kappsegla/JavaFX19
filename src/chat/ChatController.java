@@ -23,7 +23,6 @@ public class ChatController {
     }
 
     public void sendAction(ActionEvent actionEvent) {
-        System.out.println("test");
         model.sendMessage();
     }
 }
