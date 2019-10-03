@@ -1,11 +1,17 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Controller {
 
@@ -23,6 +29,8 @@ public class Controller {
     Slider slider;
     @FXML
     ListView<String> listView;
+    @FXML
+    ImageView imageView;
 
 
     Model model = new Model();
@@ -35,7 +43,7 @@ public class Controller {
         //Will run after all fields are set and view is ready
         //Next line replaces onAction="#button1Action" in fxml file
         //button1.addEventHandler(ActionEvent.ACTION,this::button1Action);
-        textArea.textProperty().bindBidirectional(model.selectedItemProperty());
+        textArea.textProperty().bind(model.selectedItemProperty());
         model.textProperty().bindBidirectional(textField.textProperty());
 //        checkBox1.selectedProperty().bindBidirectional(model.enabledProperty());
 //        textField.disableProperty().bind(model.enabledProperty());
@@ -49,10 +57,21 @@ public class Controller {
     }
 
     public void button1Action(ActionEvent actionEvent) throws InterruptedException {
-      //   model.setText("");
-      //  model.setEnabled(false);
+        //   model.setText("");
+        //  model.setEnabled(false);
         // textArea.setText(model.getText());
-        model.getItems().add(textField.getText());
+        //model.getItems().add(textField.getText());
+
+
+        Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
+        imageView.setImage(image);
+
+//         new Thread(() -> {
+//          Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
+//            Platform.runLater(() ->
+//                imageView.setImage(image)
+//            );
+//        }).start();
 
 
     }

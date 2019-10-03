@@ -7,9 +7,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Model {
 
     private StringProperty text = new SimpleStringProperty();
@@ -22,7 +19,7 @@ public class Model {
         this.text.setValue(text);
     }
 
-    public StringProperty textProperty(){
+    public StringProperty textProperty() {
         return text;
     }
 
@@ -40,7 +37,7 @@ public class Model {
         this.enabled.set(enabled);
     }
 
-    private ObservableList<String> items = FXCollections.observableArrayList (
+    private ObservableList<String> items = FXCollections.observableArrayList(
             "A", "B", "C", "D", "E");
 
     public ObservableList<String> getItems() {

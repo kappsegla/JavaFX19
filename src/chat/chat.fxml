@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="chat.ChatController">
+    <columnConstraints>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
+    <ListView fx:id="listView" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS"/>
+    <HBox alignment="BOTTOM_LEFT" prefHeight="0.0" prefWidth="0.0" GridPane.rowIndex="1"
+          GridPane.valignment="BOTTOM" GridPane.vgrow="NEVER">
+        <TextField fx:id="textField"  onAction="#sendAction" alignment="BASELINE_LEFT" HBox.hgrow="ALWAYS"/>
+        <Button fx:id="sendButton" onAction="#sendAction" text="Button" disable="${textField.text.empty}"/>
+    </HBox>
+</GridPane>
