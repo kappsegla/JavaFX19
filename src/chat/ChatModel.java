@@ -71,10 +71,8 @@ public class ChatModel {
         if (message.get().length() > 0) {
             //Send message to server
             final String mess = message.get();
-            threadPool.submit(()-> writer.println( mess ));
+            threadPool.submit(() -> writer.println(mess));
             message.setValue("");
         }
     }
-
-
 }
