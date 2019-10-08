@@ -9,8 +9,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -39,6 +41,10 @@ public class Controller {
 
     public Controller() {
         //@FXML marked fields are still null do nothing here
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
     }
 
     public void setStage(Stage stage) {
@@ -82,9 +88,28 @@ public class Controller {
     }
 
     public void circleClicked(MouseEvent mouseEvent) {
-        Circle circle = (Circle) mouseEvent.getSource();
-        circle.setRadius(40.0);
-        button1.setDisable(false);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Öppna fil");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All files", "*.*"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"));
+
+        File path = fileChooser.showOpenDialog(stage);
+
+        if( path != null){
+            System.out.println(path.getAbsolutePath());
+        }
+        else
+        {
+            System.out.println("no file");
+        }
+
+
+
+
+        //        Circle circle = (Circle) mouseEvent.getSource();
+//        circle.setRadius(40.0);
+//        button1.setDisable(false);
     }
 
     public void keyPressed(KeyEvent keyEvent) {

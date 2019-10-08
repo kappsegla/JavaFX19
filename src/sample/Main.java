@@ -15,9 +15,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println(Thread.currentThread().getName());
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-        Parent root = loader.load();
 
+        Parent root = loader.load();
         Controller controller = loader.getController();
+       // controller.setModel(new Model());
+
         controller.setStage(primaryStage);
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 800, 600));
