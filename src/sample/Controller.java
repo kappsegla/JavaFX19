@@ -35,12 +35,13 @@ public class Controller {
     @FXML
     ImageView imageView;
 
-    Model model = new Model();
+    Model model;
 
     Stage stage;
 
-    public Controller() {
+    public Controller(Model model) {
         //@FXML marked fields are still null do nothing here
+        this.model = model;
     }
 
     public void setModel(Model model) {
