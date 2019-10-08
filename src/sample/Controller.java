@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,11 +33,16 @@ public class Controller {
     @FXML
     ImageView imageView;
 
-
     Model model = new Model();
+
+    Stage stage;
 
     public Controller() {
         //@FXML marked fields are still null do nothing here
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public void initialize() {

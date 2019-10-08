@@ -121,6 +121,10 @@ public class ChatModel {
                 );
             } catch (IOException e) {
                 e.printStackTrace();
+                Platform.runLater(() ->
+                        setConnected(false)
+                );
+                return;
             }
         }
     }

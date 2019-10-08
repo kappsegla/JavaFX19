@@ -10,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
-import javax.management.monitor.StringMonitor;
 import java.util.Optional;
 
 public class ChatController {
