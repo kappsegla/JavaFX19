@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,16 +7,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.util.function.UnaryOperator;
 
 public class Controller {
 
+    @FXML
+    Button openFileButton;
+    @FXML
+    ColorPicker colorPicker;
     @FXML
     Button button1;
     @FXML
@@ -34,6 +40,9 @@ public class Controller {
     ListView<String> listView;
     @FXML
     ImageView imageView;
+
+    @FXML
+    Spinner<Integer> spinner;
 
     Model model;
 
@@ -67,17 +76,43 @@ public class Controller {
         listView.setItems(model.getItems());
         model.selectedItemProperty().bind(listView.getSelectionModel().selectedItemProperty());
 
+        colorPicker.setValue((Color) circle.getFill());
+        slider.valueProperty().unbind();
+        circle.fillProperty().bind(colorPicker.valueProperty());
+        model.sizeProperty().bind(spinner.valueProperty());
+
+        setSpinnerFormat();
+
+    }
+
+    private void setSpinnerFormat() {
+        //The following code adds some validation to our spinner so you can't enter other than number from keyboard
+        // get a localized format for parsing
+        NumberFormat format = NumberFormat.getIntegerInstance();
+        UnaryOperator<TextFormatter.Change> filter = c -> {
+            if (c.isContentChange()) {
+                ParsePosition parsePosition = new ParsePosition(0);
+                // NumberFormat evaluates the beginning of the text
+                format.parse(c.getControlNewText(), parsePosition);
+                if (parsePosition.getIndex() == 0 ||
+                        parsePosition.getIndex() < c.getControlNewText().length()) {
+                    // reject parsing the complete text failed
+                    return null;
+                }
+            }
+            return c;
+        };
+        TextFormatter<Integer> priceFormatter = new TextFormatter<Integer>(
+                new IntegerStringConverter(), 0, filter);
+        spinner.getEditor().setTextFormatter(priceFormatter);
     }
 
     public void button1Action(ActionEvent actionEvent) throws InterruptedException {
-        //   model.setText("");
-        //  model.setEnabled(false);
-        // textArea.setText(model.getText());
-        //model.getItems().add(textField.getText());
-
+        //Load an image with background set to true. Will run in it's own thread
         Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
         imageView.setImage(image);
 
+        //Load an image in a thread and use Platform.runLater to change the image when it's available
 //         new Thread(() -> {
 //          Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", false);
 //            Platform.runLater(() ->
@@ -89,6 +124,12 @@ public class Controller {
     }
 
     public void circleClicked(MouseEvent mouseEvent) {
+        Circle circle = (Circle) mouseEvent.getSource();
+        circle.setRadius(40.0);
+    }
+
+    public void openFileDialog(ActionEvent actionEvent) {
+        //Show a file dialog that returns a selected file for opening or null if no file was selected.
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Öppna fil");
         fileChooser.getExtensionFilters().addAll(
@@ -97,23 +138,13 @@ public class Controller {
 
         File path = fileChooser.showOpenDialog(stage);
 
-        if( path != null){
+        //Path can be null if abort was selected
+        if (path != null) {
+            //We have a valid File object. Use with FileReader or FileWriter
             System.out.println(path.getAbsolutePath());
-        }
-        else
-        {
+        } else {
+            //No file selected
             System.out.println("no file");
         }
-
-
-
-
-        //        Circle circle = (Circle) mouseEvent.getSource();
-//        circle.setRadius(40.0);
-//        button1.setDisable(false);
-    }
-
-    public void keyPressed(KeyEvent keyEvent) {
-        button1.setText(keyEvent.getText());
     }
 }

@@ -1,9 +1,6 @@
 package sample;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -56,5 +53,19 @@ public class Model {
 
     public void setSelectedItem(String selectedItem) {
         this.selectedItem.set(selectedItem);
+    }
+
+    IntegerProperty size = new SimpleIntegerProperty();
+
+    public int getSize() {
+        return size.get();
+    }
+
+    public IntegerProperty sizeProperty() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size.set(size);
     }
 }
