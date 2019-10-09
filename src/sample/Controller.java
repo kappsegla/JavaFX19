@@ -3,6 +3,7 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,8 +48,8 @@ public class Controller {
     Spinner<Integer> spinner;
 
     Model model;
-
     Stage stage;
+    GraphicsContext graphicsContext;
 
     public Controller(Model model) {
         //@FXML marked fields are still null do nothing here
@@ -85,8 +86,9 @@ public class Controller {
 
         setSpinnerFormat();
 
-        canvas.getGraphicsContext2D().fillOval(50,50,25,25);
-
+        //Get a reference to graphics Context for canvas and store it for later use.
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.fillOval(50,50,25,25);
     }
 
     private void setSpinnerFormat() {
