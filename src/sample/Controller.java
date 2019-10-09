@@ -1,13 +1,15 @@
 package sample;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -53,10 +55,6 @@ public class Controller {
 
     public Controller(Model model) {
         //@FXML marked fields are still null do nothing here
-        this.model = model;
-    }
-
-    public void setModel(Model model) {
         this.model = model;
     }
 
@@ -149,5 +147,37 @@ public class Controller {
             //No file selected
             System.out.println("no file");
         }
+    }
+
+    public void canvasClicked(MouseEvent mouseEvent) {
+        graphicsContext.fillOval(mouseEvent.getX(), mouseEvent.getY(), 10,10);
+    }
+
+    public void keyPressed(KeyEvent keyEvent) {
+    }
+
+    public void init(Scene scene) {
+        //Capture Ctrl-Z for undo
+        scene.addEventFilter(KeyEvent.KEY_PRESSED,
+                new EventHandler<KeyEvent>() {
+                    final KeyCombination ctrlZ = new KeyCodeCombination(KeyCode.Z,
+                            KeyCombination.CONTROL_DOWN);
+                    final KeyCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z,
+                            KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+
+                    public void handle(KeyEvent ke) {
+                        if (ctrlZ.match(ke)) {
+                            //Undo
+                            System.out.println("Undo");
+                            ke.consume(); // <-- stops passing the event to next node
+                        } else if (ctrlShiftZ.match(ke)) {
+                            //Redo
+                            System.out.println("Redo");
+                            ke.consume();
+                        }
+                    }
+                });
+
+
     }
 }
