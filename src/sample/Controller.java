@@ -2,10 +2,10 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,6 +20,8 @@ import java.util.function.UnaryOperator;
 
 public class Controller {
 
+    @FXML
+    Canvas canvas;
     @FXML
     Button openFileButton;
     @FXML
@@ -83,6 +85,8 @@ public class Controller {
 
         setSpinnerFormat();
 
+        canvas.getGraphicsContext2D().fillOval(50,50,25,25);
+
     }
 
     private void setSpinnerFormat() {
@@ -103,7 +107,7 @@ public class Controller {
             return c;
         };
         TextFormatter<Integer> priceFormatter = new TextFormatter<Integer>(
-                new IntegerStringConverter(), 0, filter);
+                new IntegerStringConverter(), 1, filter);
         spinner.getEditor().setTextFormatter(priceFormatter);
     }
 
@@ -111,7 +115,6 @@ public class Controller {
         //Load an image with background set to true. Will run in it's own thread
         Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", true);
         imageView.setImage(image);
-
         //Load an image in a thread and use Platform.runLater to change the image when it's available
 //         new Thread(() -> {
 //          Image image = new Image("https://f.nordiskemedier.dk/2x0hf50xws60pfsb.jpg", false);
@@ -119,8 +122,6 @@ public class Controller {
 //                imageView.setImage(image)
 //            );
 //        }).start();
-
-
     }
 
     public void circleClicked(MouseEvent mouseEvent) {
